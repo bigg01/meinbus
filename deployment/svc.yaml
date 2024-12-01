@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: meinbus-service
+  name: meinbus
   namespace: meinbus
 spec:
   ports:

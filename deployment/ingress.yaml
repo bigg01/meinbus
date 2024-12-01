@@ -13,6 +13,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: meinbus-service
+                name: meinbus
                 port:
                   number: 5000
