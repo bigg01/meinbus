@@ -4,10 +4,10 @@ metadata:
   name: meinbus-service
   namespace: meinbus
 spec:
-  selector:
-    app: meinbus
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-  type: LoadBalancer
+  selector:
+    app: meinbus
+  type: ClusterIP

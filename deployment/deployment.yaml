@@ -15,6 +15,7 @@ spec:
       labels:
         app: meinbus
     spec:
+      restartPolicy: Always
       containers:
       - name: meinbus
         image: ghcr.io/bigg01/meinbus:main

@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: meinbus-ingress
   namespace: meinbus
-status:
-  loadBalancer: {}
 spec:
   ingressClassName: nginx
   rules:

@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_APP=meinbus3.py
+ENV FLASK_APP=meinbus.py
 
 # Run the application with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "meinbus3:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "meinbus:app"]
