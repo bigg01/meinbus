@@ -22,6 +22,6 @@ spec:
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
-        # env:
-        # - name: FLASK_APP
-        #   value: "meinbus3.py"
+         env:
+        - name: STOP_NAMES
+          value: "Oberwiesenstrasse,Birchdörfli"

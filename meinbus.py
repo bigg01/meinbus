@@ -1,16 +1,19 @@
 from flask import Flask, render_template_string
 from datetime import datetime, timezone
 import requests
+import os
 
 app = Flask(__name__)
 
-BASE_URL = 'https://transport.opendata.ch/v1/'
+BASE_URL = "https://transport.opendata.ch/v1/"
+
 
 # Custom filter to format datetime string to hh:mm:ss
 @app.template_filter("format_time")
 def format_time(value):
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     return dt.strftime("%H:%M:%S")
+
 
 # Custom filter to calculate minutes until departure
 @app.template_filter("minutes_until")
@@ -21,29 +24,30 @@ def minutes_until(value):
     total_seconds = int(delta.total_seconds() // 60)
     return total_seconds
 
+
 @app.route("/")
 def index():
-    #stop_names = ["Oberwiesenstrasse", "Birchdörfli", "Brunnenhof", "Bad Allenmoos"]
-    #stop_names = ["Birchdörfli", "Oberwiesenstrasse", "", "Brunnenhof", "Bad Allenmoos"]
+    # stop_names = os.getenv("STOP_NAMES") or "Birchdörfli"
     stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
+
     station_coordinates = {
         "Oberwiesenstrasse": {"lat": 47.410473, "lon": 8.532815},
         "Birchdörfli": {"lat": 47.3780, "lon": 8.5400},
         "Brunnenhof": {"lat": 47.4000, "lon": 8.5500},
-        "Bad Allenmoos": {"lat": 47.4100, "lon": 8.5600}
+        "Bad Allenmoos": {"lat": 47.4100, "lon": 8.5600},
     }
     departures = {}
     for stop_name in stop_names:
         data = get_real_time_data(stop_name)
         if data:
             departures[stop_name] = data["stationboard"]
-    disruptions = [] #get_disruptions()
+    disruptions = []  # get_disruptions()
     current_time = datetime.now().strftime("%H:%M:%S")
-    
+
     html = """
     <html>
     <head>
-        <title>Bus Station Departures</title>
+        <title>Bus Station Abfahrten</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -78,11 +82,11 @@ def index():
             <div class="container">
                  {% for stop_name, stop_departures in departures.items() %}
                 <div class="panel">
-                    <p class="panel-heading">
+                    <p class="panel-heading p-1">
                         Abfahrt - {{ stop_name }} - {{ current_time }}
                     </p>
-                    <div class="panel-block">
-                        <div class="table-container">
+                    <div class="panel">
+                        <div class="table-container is-fullwidth has-background-dark has-text-light p-1">
                             <table class="table is-fullwidth is-striped is-hoverable small-text">
                                 <thead>
                                     <tr>
@@ -170,48 +174,52 @@ def index():
     </body>
     </html>
     """
-    return render_template_string(html, departures=departures, disruptions=disruptions, station_coordinates=station_coordinates, current_time=current_time)
+    return render_template_string(
+        html,
+        departures=departures,
+        disruptions=disruptions,
+        station_coordinates=station_coordinates,
+        current_time=current_time,
+    )
+
 
 def get_real_time_data(stop_name):
-    endpoint = f'{BASE_URL}locations'
-    params = {
-        'query': stop_name,
-        'type': 'station'
-    }
+    endpoint = f"{BASE_URL}locations"
+    params = {"query": stop_name, "type": "station"}
     response = requests.get(endpoint, params=params)
     if response.status_code == 200:
         data = response.json()
-        if data['stations']:
-            station_id = data['stations'][0]['id']
+        if data["stations"]:
+            station_id = data["stations"][0]["id"]
             return get_departures(station_id)
         else:
-            print('No station found')
+            print("No station found")
             return None
     else:
-        print(f'Error: {response.status_code}')
+        print(f"Error: {response.status_code}")
         return None
 
+
 def get_departures(station_id):
-    endpoint = f'{BASE_URL}stationboard'
-    params = {
-        'id': station_id,
-        'limit': 5
-    }
+    endpoint = f"{BASE_URL}stationboard"
+    params = {"id": station_id, "limit": 5}
     response = requests.get(endpoint, params=params)
     if response.status_code == 200:
         return response.json()
     else:
-        print(f'Error: {response.status_code}')
+        print(f"Error: {response.status_code}")
         return None
 
+
 def get_disruptions():
-    endpoint = f'{BASE_URL}disruptions'
+    endpoint = f"{BASE_URL}disruptions"
     response = requests.get(endpoint)
     if response.status_code == 200:
-        return response.json()['disruptions']
+        return response.json()["disruptions"]
     else:
-        print(f'Error: {response.status_code}')
+        print(f"Error: {response.status_code}")
         return []
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
