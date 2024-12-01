@@ -4,4 +4,4 @@ Stationsfahrplan für unsere Famillie
 
 # screeenshot
 
-![example](images/metrics.png))
+![example](images/example1.png))
