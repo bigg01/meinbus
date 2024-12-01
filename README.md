@@ -1,6 +1,6 @@
 # Meinbus
 
-Stationsfahrplan für unsere Famillie
+Stationsfahrplan für unsere Famillie :oncoming_bus:
 
 # screeenshot
 
