@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meinbus-deployment
+  namespace: meinbus
+  labels:
+    app: meinbus
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: meinbus
+  template:
+    metadata:
+      labels:
+        app: meinbus
+    spec:
+      containers:
+      - name: meinbus
+        image: ghcr.io/bigg01/meinbus:main
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+        # env:
+        # - name: FLASK_APP
+        #   value: "meinbus3.py"

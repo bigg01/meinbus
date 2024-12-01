@@ -1,4 +1,4 @@
-# Use the official Python image from the Docker Hub
+# Use the official Python image from the Docker Hub as the base image
 FROM python:3.9-slim
 
 # Set the working directory in the container
@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_APP=meinbus.py
+ENV FLASK_APP=meinbus3.py
 
-# Run the application
-CMD ["flask", "run", "--host=0.0.0.0"]
+# Run the application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "meinbus3:app"]
