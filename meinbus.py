@@ -155,11 +155,11 @@ def index():
                 <table class="table is-fullwidth has-text-warning">
                     <thead class="has-background-black">
                         <tr>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Departure</th>
-                            <th>Arrival</th>
-                            <th>Duration</th>
+                            <th>Von</th>
+                            <th>Nach</th>
+                            <th>Abfahrt</th>
+                            <th>Ankunft</th>
+                            <th>Dauer</th>
                         </tr>
                     </thead>
                     <tbody>
