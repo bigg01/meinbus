@@ -150,13 +150,12 @@ def index():
 
                 {% endfor %}
 
-                Connection <i class='fa fa-bus'></i> 
+                Verbindungen - Oberwiesenstrasse nach Luchswiesen
                     <div class="table-container">
                 <table class="table is-fullwidth has-text-warning">
                     <thead class="has-background-black">
                         <tr>
-                            <th>Von</th>
-                            <th>Nach</th>
+                            <th>Linie</th>
                             <th>Abfahrt</th>
                             <th>Ankunft</th>
                             <th>Dauer</th>
@@ -165,8 +164,7 @@ def index():
                     <tbody>
                         {% for connection in connections['connections'] %}
                         <tr>
-                            <td>{{ connection['sections'][0]['journey']['number'] }} - {{ connection['from']['station']['name'] }}</td>
-                            <td>{{ connection['to']['station']['name'] }}</td>
+                            <td><i class='fa fa-bus'></i> {{ connection['sections'][0]['journey']['number'] }}</td>
                             <td>{{ connection['from']['departure'] | format_time }}</td>
                             <td>{{ connection['to']['arrival'] | format_time }}</td>
                             <td>{{ connection['duration'] }}</td>
