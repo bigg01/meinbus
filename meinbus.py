@@ -103,7 +103,7 @@ def index():
                     {% for stop_name, stop_departures in departures.items() %}
                         Abfahrt - {{ stop_name }} - {{ current_time }}           
                         <div class="table-container">
-                            <table class="table is-fullwidth has-text-orange">
+                            <table class="table is-fullwidth has-text-warning">
                                 <thead class="has-background-black">
                                     <tr>
                                         <th>Linie</th>
