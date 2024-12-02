@@ -1,3 +1,4 @@
+from pprint import pprint
 from flask import Flask, render_template_string
 from datetime import datetime, timezone
 import requests
@@ -28,8 +29,8 @@ def minutes_until(value):
 @app.route("/")
 def index():
     # stop_names = os.getenv("STOP_NAMES") or "Birchdörfli"
-    stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
-    # stop_names = ["Oberwiesenstrasse"]
+    #stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
+    stop_names = ["Oberwiesenstrasse"]
 
     station_coordinates = {
         "Oberwiesenstrasse": {"lat": 47.410473, "lon": 8.532815},
@@ -44,6 +45,7 @@ def index():
             departures[stop_name] = data["stationboard"]
     disruptions = []  # get_disruptions()
     current_time = datetime.now().strftime("%H:%M:%S")
+    connections = get_connection(from_station="Zürich, Oberwiesenstrasse", to_station="Zürich, Glattwiesen")
 
     html = """
     <html>
@@ -148,6 +150,33 @@ def index():
 
                 {% endfor %}
 
+
+                    <div class="table-container">
+                <table class="table is-fullwidth has-text-warning">
+                    <thead class="has-background-black">
+                        <tr>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Departure</th>
+                            <th>Arrival</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for connection in connections['connections'] %}
+                        <tr>
+                            <td>{{ connection['from']['station']['name'] }}</td>
+                            <td>{{ connection['to']['station']['name'] }}</td>
+                            <td>{{ connection['from']['departure'] | format_time }}</td>
+                            <td>{{ connection['to']['arrival'] | format_time }}</td>
+                            <td>{{ connection['duration'] }}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         <div class="tags has-addons">
         <span class="tag">Author</span>
         <span class="tag is-primary">Bigg01</span>
@@ -161,6 +190,7 @@ def index():
         disruptions=disruptions,
         station_coordinates=station_coordinates,
         current_time=current_time,
+        connections=connections,
     )
 
 
@@ -200,6 +230,30 @@ def get_disruptions():
     else:
         print(f"Error: {response.status_code}")
         return []
+
+
+def get_connection(from_station, to_station):
+    endpoint = f"{BASE_URL}connections"
+    current_time = datetime.now().strftime("%H:%M")
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    params = {
+        "from": from_station,
+        "to": to_station,
+        "date": current_date,
+        "time": current_time,
+        # "transportations": "bus",
+        "limit": 3,
+    }
+    response = requests.get(endpoint, params=params)
+    print(response.url)
+    if response.status_code == 200:
+        result = response.json()
+        # with open("data.json", "w") as f:
+        #     f.write(response.text)
+        return result
+    else:
+        print(f"Error: {response.status_code}")
+        return None
 
 
 if __name__ == "__main__":
