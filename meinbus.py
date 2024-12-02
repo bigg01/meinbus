@@ -29,6 +29,7 @@ def minutes_until(value):
 def index():
     # stop_names = os.getenv("STOP_NAMES") or "Birchdörfli"
     stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
+    stop_names = ["Oberwiesenstrasse"]
 
     station_coordinates = {
         "Oberwiesenstrasse": {"lat": 47.410473, "lon": 8.532815},
@@ -54,7 +55,7 @@ def index():
         <meta http-equiv="refresh" content="30">
         <style>
             body {
-                <!-- background-color: #1e1e1e; -->
+                background-color: #1e1e1e;
                 color: #f5aa63;
             }
             .container {
@@ -72,7 +73,7 @@ def index():
                 margin-top: 20px;
             }
             .small-text {
-                font-size: 0.8em; /* Smaller font size for specific elements */
+                font-size: 1.2em; /* Smaller font size for specific elements */
             }
         </style>
     </head>
@@ -82,11 +83,11 @@ def index():
             <div class="container">
                  {% for stop_name, stop_departures in departures.items() %}
                 <div class="panel">
-                    <p class="panel-heading p-1">
+                    <p class="panel-heading">
                         Abfahrt - {{ stop_name }} - {{ current_time }}
                     </p>
                     <div class="panel">
-                        <div class="table-container is-fullwidth has-background-dark has-text-light p-1">
+                        <div class="table-container is-fullwidth has-background-dark has-text-light">
                             <table class="table is-fullwidth is-striped is-hoverable small-text">
                                 <thead>
                                     <tr>

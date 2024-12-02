@@ -25,3 +25,5 @@ spec:
         env:
         - name: STOP_NAMES
           value: "Oberwiesenstrasse,Birchdörfli"
+        - name: TZ
+          value: "Europe/Zurich"
