@@ -150,7 +150,7 @@ def index():
 
                 {% endfor %}
 
-                Connection
+                Connection <i class='fa fa-bus'></i> 
                     <div class="table-container">
                 <table class="table is-fullwidth has-text-warning">
                     <thead class="has-background-black">
@@ -241,15 +241,12 @@ def get_connection(from_station, to_station):
         "to": to_station,
         "date": current_date,
         "time": current_time,
-        # "transportations": "bus",
+        "transportations": "bus",
         "limit": 3,
     }
     response = requests.get(endpoint, params=params)
-    print(response.url)
     if response.status_code == 200:
         result = response.json()
-        # with open("data.json", "w") as f:
-        #     f.write(response.text)
         return result
     else:
         print(f"Error: {response.status_code}")
