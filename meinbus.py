@@ -12,7 +12,7 @@ BASE_URL = "https://transport.opendata.ch/v1/"
 @app.template_filter("format_time")
 def format_time(value):
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
-    return dt.strftime("%H:%M:%S")
+    return dt.strftime("%H:%M")
 
 
 # Custom filter to calculate minutes until departure
@@ -29,7 +29,7 @@ def minutes_until(value):
 def index():
     # stop_names = os.getenv("STOP_NAMES") or "Birchdörfli"
     stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
-    stop_names = ["Oberwiesenstrasse"]
+    # stop_names = ["Oberwiesenstrasse"]
 
     station_coordinates = {
         "Oberwiesenstrasse": {"lat": 47.410473, "lon": 8.532815},
@@ -49,53 +49,56 @@ def index():
     <html>
     <head>
         <title>Bus Station Abfahrten</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta http-equiv="refresh" content="30">
         <style>
             body {
-                background-color: #1e1e1e;
-                color: #f5aa63;
+                background-color: #000;
+                color: #FFF;
+                
             }
-            .container {
-                margin-top: -20 px;
-            }
-            .card {
-                background-color: #1e1e1e;
-                color: #f5aa63;
-            }
-            .card-content {
-                border-bottom: 1px solid #333;
-            }
-            #map {
-                height: 400px;
-                margin-top: 20px;
-            }
-            .small-text {
-                font-size: 1.2em; /* Smaller font size for specific elements */
-            }
+            .table td, .table th {
+                color: #FFA500;
+                border: 0;
+                border-collapse: collapse;
+                }
+
+            .table {
+                background-color: #000;
+                }
+            table {
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                color: #333;
+                background-color: black;
+                }
+
+                th, td {
+                padding: 10px;
+                text-align: left;
+                border: 0;
+                border-collapse: collapse;
+                }
+
+
+
         </style>
     </head>
-    <body>
-
-        <section class="section">
-            <div class="container">
-                 {% for stop_name, stop_departures in departures.items() %}
-                <div class="panel">
-                    <p class="panel-heading">
+    <body>                
+                    {% for stop_name, stop_departures in departures.items() %}
                         Abfahrt - {{ stop_name }} - {{ current_time }}
-                    </p>
-                    <div class="panel">
-                        <div class="table-container is-fullwidth has-background-dark has-text-light">
-                            <table class="table is-fullwidth is-striped is-hoverable small-text">
-                                <thead>
+                
+            
+                        <div class="table-container">
+                            <table class="table is-fullwidth has-text-orange">
+                                <thead class="has-background-black">
                                     <tr>
                                         <th>Linie</th>
                                         <th>Nach</th>
                                         <th>Abfahrt</th>
-                                        <th>Prognose</th>
-                                        <th>bis Abfahrt</th>
+                                        <th>~</th>
+                                        <th>in ca.</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,49 +132,10 @@ def index():
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
+
+
                 {% endfor %}
-                <!-- Disruptions 
-                <h2 class="title has-text-centered small-text">Disruptions</h2>
-                <div class="table-container">
-                    <table class="table is-fullwidth is-striped is-hoverable small-text">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for disruption in disruptions %}
-                            <tr>
-                                <td>{{ disruption['title'] }}</td>
-                                <td>{{ disruption['description'] }}</td>
-                                <td>{{ disruption['category'] }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                -->
-            </div>
-        </section>
-        <!-- Map 
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <script>
-            {% for stop_name, coords in station_coordinates.items() %}
-            var map = L.map('map-{{ stop_name }}').setView([{{ coords.lat }}, {{ coords.lon }}], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-            L.marker([{{ coords.lat }}, {{ coords.lon }}]).addTo(map)
-                .bindPopup('Station: {{ stop_name }}')
-                .openPopup();
-            {% endfor %}
-        </script>
-        -->
+
     </body>
     </html>
     """
