@@ -165,12 +165,11 @@ def index():
                     <tbody>
                         {% for connection in connections['connections'] %}
                         <tr>
-                            <td>{{ connection['from']['station']['name'] }}</td>
+                            <td>{{ connection['sections'][0]['journey']['number'] }} - {{ connection['from']['station']['name'] }}</td>
                             <td>{{ connection['to']['station']['name'] }}</td>
                             <td>{{ connection['from']['departure'] | format_time }}</td>
                             <td>{{ connection['to']['arrival'] | format_time }}</td>
                             <td>{{ connection['duration'] }}</td>
-
                         </tr>
                         {% endfor %}
                     </tbody>
