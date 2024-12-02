@@ -56,36 +56,50 @@ def index():
             body {
                 background-color: #000;
                 color: #FFF;
-                
             }
+
+            .light-mode body {
+                background-color: #FFF;
+                color: #000;
+            }
+
             .table td, .table th {
                 color: #FFA500;
                 border: 0;
                 border-collapse: collapse;
-                }
+            }
 
             .table {
                 background-color: #000;
-                }
+            }
+
+            .light-mode .table {
+                color: #FFF;
+            }
+
             table {
                 font-family: Arial, sans-serif;
                 font-size: 16px;
                 color: #333;
                 background-color: black;
-                }
+            }
 
-                th, td {
+            .light-mode table {
+                background-color: white;
+                color: #FFF;
+            }
+
+            th, td {
                 padding: 10px;
                 text-align: left;
                 border: 0;
                 border-collapse: collapse;
-                }
-
-
-
+            }
         </style>
     </head>
-    <body>                
+    <body>
+
+    <!-- <button id="mode-toggle">Toggle Mode</button>          <br>       -->
                     {% for stop_name, stop_departures in departures.items() %}
                         Abfahrt - {{ stop_name }} - {{ current_time }}
                 
@@ -135,7 +149,11 @@ def index():
 
 
                 {% endfor %}
-
+            <script>
+                document.getElementById('mode-toggle').addEventListener('click', function() {
+                    document.body.classList.toggle('light-mode');
+                });
+            </script>
     </body>
     </html>
     """
