@@ -56,6 +56,7 @@ def index():
             body {
                 background-color: #000;
                 color: #FFF;
+                font-size: 28px;
             }
 
             .light-mode body {
@@ -79,7 +80,7 @@ def index():
 
             table {
                 font-family: Arial, sans-serif;
-                font-size: 16px;
+                font-size: 30px;
                 color: #333;
                 background-color: black;
             }
@@ -90,20 +91,17 @@ def index():
             }
 
             th, td {
-                padding: 10px;
+                padding: 0px;
                 text-align: left;
                 border: 0;
                 border-collapse: collapse;
             }
+
         </style>
     </head>
     <body>
-
-    <!-- <button id="mode-toggle">Toggle Mode</button>          <br>       -->
                     {% for stop_name, stop_departures in departures.items() %}
-                        Abfahrt - {{ stop_name }} - {{ current_time }}
-                
-            
+                        Abfahrt - {{ stop_name }} - {{ current_time }}           
                         <div class="table-container">
                             <table class="table is-fullwidth has-text-orange">
                                 <thead class="has-background-black">
@@ -130,7 +128,7 @@ def index():
                                     {% else %}
                                     {% set color = 'white' %}
                                  {% endif %}
-                                    <td><span class="tag is-{{ color }}">{{ line }}</td>
+                                    <td><span class="tag is-large is-{{ color }}">{{ line }}</td>
                                         <td>{{ departure['to'] }}</td>
                                         <td>{{ departure['stop']['departure'] | format_time }}</td>
                                         
@@ -149,11 +147,11 @@ def index():
 
 
                 {% endfor %}
-            <script>
-                document.getElementById('mode-toggle').addEventListener('click', function() {
-                    document.body.classList.toggle('light-mode');
-                });
-            </script>
+
+        <div class="tags has-addons">
+        <span class="tag">Author</span>
+        <span class="tag is-primary">Bigg01</span>
+        </div>
     </body>
     </html>
     """
