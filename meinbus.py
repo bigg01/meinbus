@@ -45,7 +45,7 @@ def index():
             departures[stop_name] = data["stationboard"]
     disruptions = []  # get_disruptions()
     current_time = datetime.now().strftime("%H:%M:%S")
-    connections = get_connection(from_station="Zürich, Oberwiesenstrasse", to_station="Zürich, Glattwiesen")
+    connections = get_connection(from_station="Zürich, Oberwiesenstrasse", to_station="Zürich, Luchswiesen")
 
     html = """
     <html>
