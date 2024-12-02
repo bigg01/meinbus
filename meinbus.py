@@ -150,7 +150,7 @@ def index():
 
                 {% endfor %}
 
-
+                Connection
                     <div class="table-container">
                 <table class="table is-fullwidth has-text-warning">
                     <thead class="has-background-black">
