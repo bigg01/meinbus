@@ -12,7 +12,8 @@ BASE_URL = "https://transport.opendata.ch/v1/"
 # Custom filter to format datetime string to hh:mm:ss
 @app.template_filter("format_time")
 def format_time(value):
-    #assert isinstance(value, str)
+    if value is None:
+        return "N/A"  # Return a default value or handle the error
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     return dt.strftime("%H:%M")
 
@@ -20,6 +21,8 @@ def format_time(value):
 # Custom filter to calculate minutes until departure
 @app.template_filter("minutes_until")
 def minutes_until(value):
+    if value is None:
+        return "N/A"  # Return a default value or handle the error
     departure_time = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     now = datetime.now(timezone.utc)
     delta = departure_time - now
