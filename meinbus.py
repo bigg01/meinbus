@@ -57,8 +57,6 @@ def readiness():
 
 @app.route("/")
 def index():
-    # stop_names = os.getenv("STOP_NAMES") or "Birchdörfli"
-    #stop_names = ["Oberwiesenstrasse", "Birchdörfli"]
     stop_names = ["Oberwiesenstrasse"]
 
     station_coordinates = {
@@ -84,6 +82,17 @@ def index():
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta http-equiv="refresh" content="30">
+        <link rel="manifest" href="/static/manifest.json">
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/static/service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+            }
+        </script>
         <style>
             body {
                 background-color: #000;
@@ -220,7 +229,6 @@ def index():
         current_time=current_time,
         connections=connections,
     )
-
 
 def get_real_time_data(stop_name):
     endpoint = f"{BASE_URL}locations"
