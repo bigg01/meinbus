@@ -17,4 +17,5 @@ EXPOSE 5000
 ENV FLASK_APP=meinbus.py
 
 # Run the application with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-", "meinbus:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "meinbus:app"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-", "meinbus:app"]
