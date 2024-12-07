@@ -28,3 +28,5 @@ deployment.apps/meinbus-deployment   2/2     2            2           14m
 NAME                                            DESIRED   CURRENT   READY   AGE
 replicaset.apps/meinbus-deployment-5d4ccbfb67   2         2         2       14m
 ```
+
+https://realfavicongenerator.net/
