@@ -12,6 +12,7 @@ BASE_URL = "https://transport.opendata.ch/v1/"
 # Custom filter to format datetime string to hh:mm:ss
 @app.template_filter("format_time")
 def format_time(value):
+    assert isinstance(value, str)
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     return dt.strftime("%H:%M")
 
