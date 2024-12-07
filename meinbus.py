@@ -1,5 +1,5 @@
 from pprint import pprint
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, jsonify
 from datetime import datetime, timezone
 import requests
 import os
@@ -44,6 +44,15 @@ def minutes_until(value):
     delta = departure_time - now
     total_seconds = int(delta.total_seconds() // 60)
     return total_seconds
+
+@app.route("/healthz")
+def healthz():
+    return jsonify(status="ok"), 200
+
+@app.route("/readiness")
+def readiness():
+    # Add any necessary checks to determine if the app is ready
+    return jsonify(status="ready"), 200
 
 
 @app.route("/")
