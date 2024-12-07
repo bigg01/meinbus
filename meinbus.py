@@ -8,11 +8,26 @@ app = Flask(__name__)
 
 BASE_URL = "https://transport.opendata.ch/v1/"
 
+# init logging
+import logging
+
+logging.basicConfig(level=logging.INFO)
+# syslog rfc 5424 format
+log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+logging.basicConfig(format=log_format)
+logger = logging.getLogger(__name__)
+# stdout handler
+stdout_handler = logging.StreamHandler()
+stdout_handler.setFormatter(logging.Formatter(log_format))
+logger.addHandler(stdout_handler)
+
+
 
 # Custom filter to format datetime string to hh:mm:ss
 @app.template_filter("format_time")
 def format_time(value):
     if value is None:
+        logger.error("Error: value is None no prediction available")
         return "N/A"  # Return a default value or handle the error
     dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     return dt.strftime("%H:%M")
@@ -22,6 +37,7 @@ def format_time(value):
 @app.template_filter("minutes_until")
 def minutes_until(value):
     if value is None:
+        logger.error("Error: value is None no prediction available")
         return "N/A"  # Return a default value or handle the error
     departure_time = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S%z")
     now = datetime.now(timezone.utc)
@@ -42,6 +58,7 @@ def index():
         "Brunnenhof": {"lat": 47.4000, "lon": 8.5500},
         "Bad Allenmoos": {"lat": 47.4100, "lon": 8.5600},
     }
+    logger.info(f"Stop names: {stop_names}")
     departures = {}
     for stop_name in stop_names:
         data = get_real_time_data(stop_name)
@@ -205,7 +222,7 @@ def get_real_time_data(stop_name):
             station_id = data["stations"][0]["id"]
             return get_departures(station_id)
         else:
-            print("No station found")
+            logger.error("No station found")
             return None
     else:
         print(f"Error: {response.status_code}")
@@ -219,7 +236,7 @@ def get_departures(station_id):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error: {response.status_code}")
+        logger.error(f"Error: {response.status_code}")
         return None
 
 
@@ -229,7 +246,7 @@ def get_disruptions():
     if response.status_code == 200:
         return response.json()["disruptions"]
     else:
-        print(f"Error: {response.status_code}")
+        logger.error(f"Error: {response.status_code}")
         return []
 
 
@@ -250,9 +267,10 @@ def get_connection(from_station, to_station):
         result = response.json()
         return result
     else:
-        print(f"Error: {response.status_code}")
+        logger.error(f"Error: {response.status_code}")
         return None
 
 
 if __name__ == "__main__":
+    logger.info("Starting MeinBus app")
     app.run(debug=True, host="0.0.0.0", port=5000)
