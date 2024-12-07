@@ -132,56 +132,54 @@ def index():
         </style>
     </head>
     <body>
-                    {% for stop_name, stop_departures in departures.items() %}
-                        Abfahrt - {{ stop_name }} - {{ current_time }}           
-                        <div class="table-container">
-                            <table class="table is-fullwidth has-text-warning">
-                                <thead class="has-background-black">
-                                    <tr>
-                                        <th>Linie</th>
-                                        <th>Nach</th>
-                                        <th>Abfahrt</th>
-                                        <th>~</th>
-                                        <th>in ca.</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for departure in stop_departures %}
-                                    <tr>
-                                {% set line = departure['number']| int %}
-                                 {% if line == 11 %}
-                                    {% set color = 'primary' %}
-                                    {% elif line  == 62 %}
-                                    {% set color = 'link' %}
-                                    {% elif line  == 61 %}
-                                    {% set color = 'info' %}
-                                    {% elif line  == 32 %}
-                                    {% set color = 'warning' %}
-                                    {% else %}
-                                    {% set color = 'white' %}
-                                 {% endif %}
-                                    <td><span class="tag is-large is-{{ color }}">{{ line }}</td>
-                                        <td>{{ departure['to'] }}</td>
-                                        <td>{{ departure['stop']['departure'] | format_time }}</td>
-                                        
-                                        <td>{{ departure['stop']['prognosis']['departure'] | format_time }}</td>
-                                        {% set minutes_until = departure['stop']['departure'] | minutes_until %}
-                                        {% if minutes_until <= 0 %}
-                                        <td> <i class='fa fa-bus'></i> </td>
-                                        {% else %}
-                                        <td>{{ minutes_until }}' </td>
-                                        {% endif %}
-                                        
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+        {% for stop_name, stop_departures in departures.items() %}
+            Abfahrt - {{ stop_name }} - {{ current_time }}           
+            <div class="table-container">
+                <table class="table is-fullwidth has-text-warning">
+                    <thead class="has-background-black">
+                        <tr>
+                            <th>Linie</th>
+                            <th>Nach</th>
+                            <th>Abfahrt</th>
+                            <th>~</th>
+                            <th>in ca.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for departure in stop_departures %}
+                        <tr>
+                            {% set line = departure['number']|int %}
+                            {% if line == 11 %}
+                            {% set color = 'primary' %}
+                            {% elif line == 62 %}
+                            {% set color = 'link' %}
+                            {% elif line == 61 %}
+                            {% set color = 'info' %}
+                            {% elif line == 32 %}
+                            {% set color = 'warning' %}
+                            {% else %}
+                            {% set color = 'white' %}
+                            {% endif %}
+                            <td><span class="tag is-large is-{{ color }}">{{ line }}</td>
+                            <td>{{ departure['to'] }}</td>
+                            <td>{{ departure['stop']['departure'] | format_time }}</td>
+                            <td>{{ departure['stop']['prognosis']['departure'] | format_time }}</td>
+                            {% set minutes_until = departure['stop']['departure'] | minutes_until %}
+                            {% if minutes_until <= 0 %}
+                            <td> <i class='fa fa-bus'></i> </td>
+                            {% else %}
+                            <td>{{ minutes_until }}' </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
 
-
-                {% endfor %}
-
-                Verbindungen - Oberwiesenstrasse nach Luchswiesen
-                    <div class="table-container">
+        Verbindungen - Oberwiesenstrasse nach Luchswiesen
+        <div class="table-container">
+            {% if connections and connections['connections'] %}
                 <table class="table is-fullwidth has-text-warning">
                     <thead class="has-background-black">
                         <tr>
@@ -202,11 +200,14 @@ def index():
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+            {% else %}
+                <p>No connections available currently.</p>
+            {% endif %}
+        </div>
 
         <div class="tags has-addons">
-        <span class="tag">Author</span>
-        <span class="tag is-primary">Bigg01</span>
+            <span class="tag">Author</span>
+            <span class="tag is-primary">Bigg01</span>
         </div>
     </body>
     </html>
