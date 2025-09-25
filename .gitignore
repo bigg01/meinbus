@@ -160,3 +160,11 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# Azure Reservation Scripts - temporary files
+scripts/azure-reservations/*.json
+scripts/azure-reservations/*.html
+scripts/azure-reservations/reservation-backup-*.json
+scripts/azure-reservations/reservation-export-*.json
+scripts/azure-reservations/reservation-report-*.html
+scripts/azure-reservations/reservation-summary-*.html
